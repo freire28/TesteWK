@@ -1,0 +1,30 @@
+CREATE TABLE pessoa(
+	idpessoa bigserial NOT NULL,
+	flnatureza int2 NOT NULL,
+	dsdocumento varchar(20) NOT NULL,
+	nmprimeiro varchar(100) NOT NULL,
+	nmsegundo VARCHAR(100) NOT NULL,
+	dtregistro date null,
+	constraint pessoa_pk PRIMARY KEY (idpessoa)
+);	
+ 
+create table endereco(
+            idendereco bigserial NOT NULL,
+			idpessoa int8 not null ,
+			dscep varchar(15) null,
+			constraint endereco_pk PRIMARY KEY (idendereco),
+			constraint endereco_fk_pessoa FOREIGN KEY (idpessoa) REFERENCES pessoa(idpessoa) ON DELETE CASCADE
+			);
+			
+create table endereco_integracao(
+				idendereco bigint not null ,
+				dsuf varchar(50) null,
+				nmcidade varchar(100) null,
+				nmbairro varchar(50) null,
+				nmlogradouro varchar(100) null,
+				dscomplemento varchar(100) null,
+				CONSTRAINT endereco_integracao_pk PRIMARY KEY (idendereco),
+				CONSTRAINT enderecointegracao_fk_endereco FOREIGN KEY (idendereco) references endereco(idendereco) on delete cascade
+				);
+                        
+			

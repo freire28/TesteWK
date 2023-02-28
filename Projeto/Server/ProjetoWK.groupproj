@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{0B37A9A8-1546-4124-AC85-9FFBE7B44DE1}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="TesteWK.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\Client\TesteWKClient.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="TesteWK">
+        <MSBuild Projects="TesteWK.dproj"/>
+    </Target>
+    <Target Name="TesteWK:Clean">
+        <MSBuild Projects="TesteWK.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TesteWK:Make">
+        <MSBuild Projects="TesteWK.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="TesteWKClient">
+        <MSBuild Projects="..\Client\TesteWKClient.dproj"/>
+    </Target>
+    <Target Name="TesteWKClient:Clean">
+        <MSBuild Projects="..\Client\TesteWKClient.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TesteWKClient:Make">
+        <MSBuild Projects="..\Client\TesteWKClient.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="TesteWK;TesteWKClient"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="TesteWK:Clean;TesteWKClient:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="TesteWK:Make;TesteWKClient:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
