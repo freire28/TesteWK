@@ -10,12 +10,10 @@ uses System.SysUtils, System.Classes, System.JSON, Rest.JSON,
   FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.PG,
   FireDAC.Phys.PGDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, FireDAC.Comp.DataSet, Rest.Response.Adapter, DMConsultaCEP,
-  Vcl.ExtCtrls, Principal;
+  Vcl.ExtCtrls, Principal, dmConexao;
 
 type
   TServerMethods = class(TDSServerModule)
-    conexao: TFDConnection;
-    FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     FDQPessoa: TFDQuery;
     FDQEndereco: TFDQuery;
     FDQEnderecoIntegracao: TFDQuery;
@@ -52,7 +50,6 @@ type
     FDQDadosPessoanmbairro: TWideStringField;
     FDQDadosPessoanmlogradouro: TWideStringField;
     FDQDadosPessoadscomplemento: TWideStringField;
-    procedure DSServerModuleCreate(Sender: TObject);
     procedure FDQPessoaAfterPost(DataSet: TDataSet);
     procedure FDQEnderecoAfterPost(DataSet: TDataSet);
     procedure FDQPessoaAfterDelete(DataSet: TDataSet);
@@ -98,7 +95,7 @@ begin
     begin
 
       try
-        conexao.StartTransaction;
+        dmdConexao.conexao.StartTransaction;
         FDQPessoa.Edit;
         FDQPessoa.FieldByName('flnatureza').AsInteger := Pessoa.flnatureza;
         FDQPessoa.FieldByName('dsdocumento').AsString := Pessoa.dsdocumento;
@@ -119,9 +116,9 @@ begin
 
         Result := TJSONString.Create('Pessoa Alterada com sucesso id : ' +
           FDQPessoa.FieldByName('idpessoa').AsString);
-        conexao.Commit;
+        dmdConexao.conexao.Commit;
       Except
-        conexao.Rollback;
+        dmdConexao.conexao.Rollback;
         Result := TJSONString.Create('Erro ao Alterar Pessoa ');
       end;
 
@@ -147,7 +144,7 @@ begin
     begin
 
       try
-        conexao.StartTransaction;
+        dmdConexao.conexao.StartTransaction;
         FDQEndereco.Close;
         FDQEndereco.ParamByName('idpessoa').AsInteger := idPessoa;
         FDQEndereco.Open();
@@ -164,9 +161,9 @@ begin
         FDQPessoa.Delete;
         Result := TJSONString.Create('Pessoa Excluida com sucesso id : ' +
           FDQPessoa.FieldByName('idpessoa').AsString);
-        conexao.Commit;
+        dmdConexao.conexao.Commit;
       Except
-        conexao.Rollback;
+        dmdConexao.conexao.Rollback;
         Result := TJSONString.Create('Erro ao Excluida Pessoa ');
       end;
 
@@ -309,7 +306,7 @@ begin
       FDQPessoa.Open();
       Pessoa := TJson.JsonToObject<TPessoa>(objPessoa.ToJSON);
 
-      conexao.StartTransaction;
+      dmdConexao.conexao.StartTransaction;
       FDQPessoa.Insert;
       FDQPessoa.FieldByName('idpessoa').AsInteger :=
         retornaProximoId('idpessoa', 'pessoa');
@@ -334,9 +331,9 @@ begin
 
       Result := TJSONString.Create('Pessoa cadastrada com sucesso id : ' +
         FDQPessoa.FieldByName('idpessoa').AsString);
-      conexao.Commit;
+      dmdConexao.conexao.Commit;
     Except
-      conexao.Rollback;
+      dmdConexao.conexao.Rollback;
       Result := TJSONString.Create('Erro ao cadastrar Pessoa ');
     end;
 
@@ -346,11 +343,6 @@ begin
     frmPrincipal.ligaDesligaThread := true;
   end;
 
-end;
-
-procedure TServerMethods.DSServerModuleCreate(Sender: TObject);
-begin
-  conexao.Connected := true;
 end;
 
 procedure TServerMethods.FDQEnderecoAfterDelete(DataSet: TDataSet);
@@ -422,13 +414,13 @@ begin
       inc(contadorEndereco);
     end;
 
-    conexao.StartTransaction;
+    dmdConexao.conexao.StartTransaction;
     try
       FDQInserePessoaEmLote.Execute(i, 0);
       FDQInsereEnderecoEmLote.Execute(i, 0);
-      conexao.Commit;
+      dmdConexao.conexao.Commit;
     Except
-      conexao.Rollback;
+      dmdConexao.conexao.Rollback;
     end;
   finally
     Pessoa.Free;

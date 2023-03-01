@@ -10,15 +10,13 @@ uses
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.PG, FireDAC.Phys.PGDef, FireDAC.VCLUI.Wait, Data.DB,
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
-  FireDAC.DApt, FireDAC.Comp.DataSet, EnderecoIntegracao;
+  FireDAC.DApt, FireDAC.Comp.DataSet, EnderecoIntegracao, dmConexao;
 
 type
   TDMCEP = class(TDataModule)
     RESTClient1: TRESTClient;
     RESTRequest1: TRESTRequest;
     RESTResponse1: TRESTResponse;
-    conexaoThRead: TFDConnection;
-    FDPhysPgDriverLink1: TFDPhysPgDriverLink;
     FDQAuxCEP1: TFDQuery;
     FDQEnderecoIntegracao: TFDQuery;
     FDQEnderecoIntegracaoidendereco: TLargeintField;
@@ -27,8 +25,6 @@ type
     FDQEnderecoIntegracaonmbairro: TWideStringField;
     FDQEnderecoIntegracaonmlogradouro: TWideStringField;
     FDQEnderecoIntegracaodscomplemento: TWideStringField;
-    procedure DataModuleCreate(Sender: TObject);
-    procedure DataModuleDestroy(Sender: TObject);
   private
     { Private declarations }
     function buscadadosCep(cep: String): TJSONObject;
@@ -114,16 +110,6 @@ begin
       FDQAuxCEP1.Next;
     end;
   end;
-end;
-
-procedure TDMCEP.DataModuleCreate(Sender: TObject);
-begin
-  conexaoThRead.Connected := true;
-end;
-
-procedure TDMCEP.DataModuleDestroy(Sender: TObject);
-begin
-  conexaoThRead.Connected := false;
 end;
 
 end.

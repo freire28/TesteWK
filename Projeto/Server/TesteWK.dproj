@@ -128,6 +128,11 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>
         <DCCReference Include="..\classes\EnderecoIntegracao.pas"/>
+        <DCCReference Include="dmConexao.pas">
+            <Form>conexao</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TDataModule</DesignClass>
+        </DCCReference>
         <None Include="js\base64.js"/>
         <None Include="js\serverfunctionexecutor.js"/>
         <None Include="js\json2.js"/>
@@ -158,27 +163,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
                     <Source Name="MainSource">TesteWK.dpr</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxCoreRS27.bpl">ExpressCore Library by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dclcxLibraryRS27.bpl">Express Cross Platform Library by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxServerModeRS27.bpl">ExpressDataController Server Mode by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxWizardControlRS27.bpl">ExpressWizardControl by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxDockingRS27.bpl">ExpressDocking Library by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxSpreadSheetRS27.bpl">ExpressSpreadSheet by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dclcxSchedulerRS27.bpl">ExpressScheduler by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxBarRS27.bpl">ExpressBars by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxSkinsCoreRS27.bpl">ExpressSkins Library by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxPSCoreRS27.bpl">ExpressPrinting System by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxPSdxLCLnkRS27.bpl">ExpressPrinting System ReportLink for ExpressLayoutControl by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="dclcxPivotGridRS27.bpl">ExpressPivotGrid by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dxRichEditDocumentModelRS27.bpl">ExpressRichEdit Control Document Model by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dxRichEditCoreRS27.bpl">ExpressRichEdit Control Core Library by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxOrgCRS27.bpl">ExpressOrgChart by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dclcxGridRS27.bpl">ExpressQuantumGrid by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dclcxGridEMFRS27.bpl">ExpressEntityMapping Framework Extension for ExpressQuantumGrid by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxEMFRS27.bpl">ExpressEntityMapping Framework by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dclcxGridWizardRS27.bpl">ExpressQuantumGrid Wizard by Developer Express Inc.</Excluded_Packages>
-                    <Excluded_Packages Name="C:\ACBR\trunk2\Lib\Delphi\LibD27\Win32\DCLACBr_Comum.bpl">ACBr - (design-time) Biblioteca Comum, EAD, AAC  - (http://www.projetoacbr.com.br/)</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\21.0\Bpl\CEF4Delphi.bpl">CEF4Delphi</Excluded_Packages>
                     <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dclcxEditorFieldLinkRS27.bpl">ExpressEditors FieldLink by Developer Express Inc.</Excluded_Packages>
                     <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxCloudServiceLibraryRS27.bpl">ExpressCloudService Library by Developer Express Inc.</Excluded_Packages>
                     <Excluded_Packages Name="C:\Program Files (x86)\DevExpress\VCL\Library\RS27\dcldxDBXServerModeRS27.bpl">dbExpress Data Source for ExpressDataController Server Mode by Developer Express Inc.</Excluded_Packages>
@@ -315,10 +299,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="images\collapse.png" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="js\base64.js" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
-                        <RemoteDir>.\images\</RemoteDir>
-                        <RemoteName>collapse.png</RemoteName>
+                        <RemoteDir>.\js\</RemoteDir>
+                        <RemoteName>base64.js</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -725,10 +709,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="js\base64.js" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="images\collapse.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
-                        <RemoteDir>.\js\</RemoteDir>
-                        <RemoteName>base64.js</RemoteName>
+                        <RemoteDir>.\images\</RemoteDir>
+                        <RemoteName>collapse.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>

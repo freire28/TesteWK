@@ -1,37 +1,19 @@
 object ServerMethods: TServerMethods
   OldCreateOrder = False
-  OnCreate = DSServerModuleCreate
-  Height = 547
-  Width = 653
-  object conexao: TFDConnection
-    Params.Strings = (
-      'User_Name=postgres'
-      'Database=postgres'
-      'Password=denisdes'
-      'Server=localhost'
-      'DriverID=PG')
-    Connected = True
-    LoginPrompt = False
-    Left = 32
-    Top = 48
-  end
-  object FDPhysPgDriverLink1: TFDPhysPgDriverLink
-    VendorLib = 'C:\Program Files (x86)\PostgreSQL\psqlODBC\bin\libpq.dll'
-    Left = 72
-    Top = 48
-  end
+  Height = 327
+  Width = 324
   object FDQPessoa: TFDQuery
     AfterPost = FDQPessoaAfterPost
     AfterDelete = FDQPessoaAfterDelete
     CachedUpdates = True
-    Connection = conexao
+    Connection = dmdConexao.conexao
     SQL.Strings = (
       
         'SELECT idpessoa, flnatureza, dsdocumento, nmprimeiro, nmsegundo,' +
         ' dtregistro'
       '  FROM pessoa where idpessoa = :idpessoa')
-    Left = 32
-    Top = 104
+    Left = 16
+    Top = 8
     ParamData = <
       item
         Name = 'IDPESSOA'
@@ -70,13 +52,13 @@ object ServerMethods: TServerMethods
     AfterPost = FDQEnderecoAfterPost
     AfterDelete = FDQEnderecoAfterDelete
     CachedUpdates = True
-    Connection = conexao
+    Connection = dmdConexao.conexao
     SQL.Strings = (
       'SELECT idendereco, idpessoa, dscep'
       #9'FROM endereco'
       'where idpessoa= :idpessoa')
-    Left = 32
-    Top = 152
+    Left = 16
+    Top = 56
     ParamData = <
       item
         Name = 'IDPESSOA'
@@ -100,15 +82,15 @@ object ServerMethods: TServerMethods
   object FDQEnderecoIntegracao: TFDQuery
     AfterDelete = FDQEnderecoIntegracaoAfterDelete
     CachedUpdates = True
-    Connection = conexao
+    Connection = dmdConexao.conexao
     SQL.Strings = (
       
         'SELECT idendereco, dsuf, nmcidade, nmbairro, nmlogradouro, dscom' +
         'plemento'
       #9'FROM endereco_integracao'
       'where idendereco = :idendereco')
-    Left = 184
-    Top = 152
+    Left = 104
+    Top = 56
     ParamData = <
       item
         Name = 'IDENDERECO'
@@ -147,12 +129,11 @@ object ServerMethods: TServerMethods
     end
   end
   object FDQAux: TFDQuery
-    Connection = conexao
-    Left = 32
-    Top = 200
+    Connection = dmdConexao.conexao
+    Left = 16
+    Top = 104
   end
   object FDUpdPessoa: TFDUpdateSQL
-    Connection = conexao
     InsertSQL.Strings = (
       'INSERT INTO pessoa'
       '(idpessoa, flnatureza, dsdocumento, nmprimeiro, '
@@ -180,11 +161,11 @@ object ServerMethods: TServerMethods
       'select * from pessoa'
       ') '
       'WHERE idpessoa = :old_idpessoa')
-    Left = 120
-    Top = 104
+    Left = 104
+    Top = 8
   end
   object FDQInserePessoaEmLote: TFDQuery
-    Connection = conexao
+    Connection = dmdConexao.conexao
     SQL.Strings = (
       'INSERT INTO pessoa('
       
@@ -193,8 +174,8 @@ object ServerMethods: TServerMethods
       
         #9'VALUES (:idpessoa, :flnatureza, :dsdocumento, :nmprimeiro, :nms' +
         'egundo, :dtregistro)')
-    Left = 32
-    Top = 264
+    Left = 16
+    Top = 168
     ParamData = <
       item
         Name = 'IDPESSOA'
@@ -228,13 +209,13 @@ object ServerMethods: TServerMethods
       end>
   end
   object FDQInsereEnderecoEmLote: TFDQuery
-    Connection = conexao
+    Connection = dmdConexao.conexao
     SQL.Strings = (
       'INSERT INTO public.endereco('
       #9'idendereco, idpessoa, dscep)'
       #9'VALUES (:idendereco, :idpessoa, :dscep);')
-    Left = 32
-    Top = 312
+    Left = 16
+    Top = 216
     ParamData = <
       item
         Name = 'IDENDERECO'
@@ -255,7 +236,7 @@ object ServerMethods: TServerMethods
   object FDQDadosPessoa: TFDQuery
     AfterPost = FDQPessoaAfterPost
     CachedUpdates = True
-    Connection = conexao
+    Connection = dmdConexao.conexao
     SQL.Strings = (
       
         'SELECT a.idpessoa, a.flnatureza, a.dsdocumento, a.nmprimeiro, a.' +
@@ -265,8 +246,8 @@ object ServerMethods: TServerMethods
       #9'FROM pessoa a'
       #9'inner join endereco b on a.idpessoa = b.idpessoa '
       #9'left join endereco_integracao c on c.idendereco = b.idendereco')
-    Left = 216
-    Top = 232
+    Left = 104
+    Top = 112
     object FDQDadosPessoaidpessoa: TLargeintField
       FieldName = 'idpessoa'
       Origin = 'idpessoa'

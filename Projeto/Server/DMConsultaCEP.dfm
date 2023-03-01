@@ -1,9 +1,7 @@
 object DMCEP: TDMCEP
   OldCreateOrder = False
-  OnCreate = DataModuleCreate
-  OnDestroy = DataModuleDestroy
-  Height = 258
-  Width = 295
+  Height = 138
+  Width = 188
   object RESTClient1: TRESTClient
     BaseURL = 'https://viacep.com.br/ws/80620250/json'
     Params = <>
@@ -32,39 +30,22 @@ object DMCEP: TDMCEP
     Left = 56
     Top = 16
   end
-  object conexaoThRead: TFDConnection
-    Params.Strings = (
-      'User_Name=postgres'
-      'Database=postgres'
-      'Password=denisdes'
-      'Server=localhost'
-      'DriverID=PG')
-    Connected = True
-    LoginPrompt = False
-    Left = 32
-    Top = 72
-  end
-  object FDPhysPgDriverLink1: TFDPhysPgDriverLink
-    VendorLib = 'C:\Program Files (x86)\PostgreSQL\psqlODBC\bin\libpq.dll'
-    Left = 72
-    Top = 72
-  end
   object FDQAuxCEP1: TFDQuery
-    Connection = conexaoThRead
-    Left = 32
-    Top = 136
+    Connection = conexao.conexao
+    Left = 24
+    Top = 72
   end
   object FDQEnderecoIntegracao: TFDQuery
     CachedUpdates = True
-    Connection = conexaoThRead
+    Connection = conexao.conexao
     SQL.Strings = (
       
         'SELECT idendereco, dsuf, nmcidade, nmbairro, nmlogradouro, dscom' +
         'plemento'
       #9'FROM public.endereco_integracao'
       'where 1 = -1')
-    Left = 72
-    Top = 136
+    Left = 64
+    Top = 72
     object FDQEnderecoIntegracaoidendereco: TLargeintField
       FieldName = 'idendereco'
       Origin = 'idendereco'
