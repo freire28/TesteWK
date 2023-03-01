@@ -2,7 +2,8 @@ unit EnderecoIntegracao;
 
 interface
 
-type TEnderecoIntegracao = class
+type
+  TEnderecoIntegracao = class
   private
     Flogradouro: String;
     Fibge: String;
@@ -26,20 +27,20 @@ type TEnderecoIntegracao = class
     procedure Setuf(const Value: String);
 
   public
-      Constructor Create;
-      Destructor destroy;
-    property cep:String read FCep write fCep;
-    property logradouro:String read Flogradouro write Setlogradouro;
-    property complemento:String read Fcomplemento write Setcomplemento;
-    property bairro:String read Fbairro write Setbairro;
-    property localidade:String read Flocalidade write Setlocalidade;
-    property uf:String read Fuf write Setuf;
-    property ibge:String read Fibge write Setibge;
-    property gia:String read Fgia write Setgia;
-    property ddd:String read Fddd write Setddd;
-    property siafi:String read Fsiafi write Setsiafi;
+    Constructor Create;
+    Destructor destroy;
+    property cep: String read Fcep write Fcep;
+    property logradouro: String read Flogradouro write Setlogradouro;
+    property complemento: String read Fcomplemento write Setcomplemento;
+    property bairro: String read Fbairro write Setbairro;
+    property localidade: String read Flocalidade write Setlocalidade;
+    property uf: String read Fuf write Setuf;
+    property ibge: String read Fibge write Setibge;
+    property gia: String read Fgia write Setgia;
+    property ddd: String read Fddd write Setddd;
+    property siafi: String read Fsiafi write Setsiafi;
 
-end;
+  end;
 
 implementation
 

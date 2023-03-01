@@ -4,7 +4,8 @@ interface
 
 uses Endereco;
 
-type TPessoa = class
+type
+  TPessoa = class
   private
     FidPessoa: integer;
     Fflnatureza: integer;
@@ -26,14 +27,14 @@ type TPessoa = class
     destructor destroy;
 
     property idPessoa: integer read FidPessoa write SetidPessoa;
-    property flnatureza :integer  read Fflnatureza write Setflnatureza;
-    property dsdocumento : String read Fdsdocumento write Setdsdocumento;
-    property nmprimeiro:String read Fnmprimeiro write Setnmprimeiro;
-    property nmsegundo:string read Fnmsegundo write Setnmsegundo;
-    property dtregistro:Tdatetime read Fdtregistro write Setdtregistro;
-    property endereco:TEndereco read Fendereco write Setendereco;
+    property flnatureza: integer read Fflnatureza write Setflnatureza;
+    property dsdocumento: String read Fdsdocumento write Setdsdocumento;
+    property nmprimeiro: String read Fnmprimeiro write Setnmprimeiro;
+    property nmsegundo: string read Fnmsegundo write Setnmsegundo;
+    property dtregistro: Tdatetime read Fdtregistro write Setdtregistro;
+    property Endereco: TEndereco read Fendereco write Setendereco;
 
-end;
+  end;
 
 implementation
 
@@ -41,12 +42,12 @@ implementation
 
 constructor TPessoa.Create;
 begin
-  endereco := TEndereco.Create;
+  Endereco := TEndereco.Create;
 end;
 
 destructor TPessoa.destroy;
 begin
-  endereco.Free;
+  Endereco.Free;
 end;
 
 procedure TPessoa.Setdsdocumento(const Value: String);
@@ -54,7 +55,7 @@ begin
   Fdsdocumento := Value;
 end;
 
-procedure TPessoa.Setdtregistro(const Value: TDatetime);
+procedure TPessoa.Setdtregistro(const Value: Tdatetime);
 begin
   Fdtregistro := Value;
 end;

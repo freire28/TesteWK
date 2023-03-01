@@ -23,7 +23,6 @@ function DSServer: TDSServer;
 
 implementation
 
-
 {$R *.dfm}
 
 uses
@@ -50,15 +49,18 @@ begin
   FDSServer := nil;
 end;
 
-procedure TServerContainer1.DSServerClass1GetClass(
-  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+procedure TServerContainer1.DSServerClass1GetClass(DSServerClass
+  : TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := ServerMethods.TServerMethods;
 end;
 
 initialization
-  FModule := TServerContainer1.Create(nil);
-finalization
-  FModule.Free;
-end.
 
+FModule := TServerContainer1.Create(nil);
+
+finalization
+
+FModule.Free;
+
+end.

@@ -8,13 +8,11 @@ uses
   Vcl.AppEvnts, Vcl.StdCtrls, IdHTTPWebBrokerBridge, IdGlobal, Web.HTTPApp,
   Vcl.ExtCtrls, DMConsultaCEP;
 
-
 type
   TDBThread = class(TThread)
   protected
     procedure Execute; override;
   end;
-
 
 type
   TfrmPrincipal = class(TForm)
@@ -36,13 +34,14 @@ type
     procedure CheckBox1Click(Sender: TObject);
   private
     FServer: TIdHTTPWebBrokerBridge;
-    FligaDesligaThread: boolean;
+    FligaDesligaThread: Boolean;
     procedure StartServer;
-    procedure SetligaDesligaThread(const Value: boolean);
+    procedure SetligaDesligaThread(const Value: Boolean);
     { Private declarations }
   public
     { Public declarations }
-    property ligaDesligaThread:boolean read FligaDesligaThread write SetligaDesligaThread;
+    property ligaDesligaThread: Boolean read FligaDesligaThread
+      write SetligaDesligaThread;
   end;
 
 var
@@ -53,9 +52,10 @@ implementation
 {$R *.dfm}
 
 uses
-  WinApi.Windows, Winapi.ShellApi, Datasnap.DSSession;
+  Winapi.Windows, Winapi.ShellApi, Datasnap.DSSession;
 
-procedure TfrmPrincipal.ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
+procedure TfrmPrincipal.ApplicationEvents1Idle(Sender: TObject;
+  var Done: Boolean);
 begin
   ButtonStart.Enabled := not FServer.Active;
   ButtonStop.Enabled := FServer.Active;
@@ -68,9 +68,7 @@ var
 begin
   StartServer;
   LURL := Format('http://localhost:%s', [EditPort.Text]);
-  ShellExecute(0,
-        nil,
-        PChar(LURL), nil, nil, SW_SHOWNOACTIVATE);
+  ShellExecute(0, nil, PChar(LURL), nil, nil, SW_SHOWNOACTIVATE);
 end;
 
 procedure TfrmPrincipal.ButtonStartClick(Sender: TObject);
@@ -96,7 +94,7 @@ begin
   if CheckBox1.Checked then
     TimerThread.Enabled := true
   else
-    TimerThread.Enabled := false;
+    TimerThread.Enabled := False;
 end;
 
 procedure TfrmPrincipal.FormCreate(Sender: TObject);
@@ -109,9 +107,9 @@ begin
   ligaDesligaThread := true;
 end;
 
-procedure TfrmPrincipal.SetligaDesligaThread(const Value: boolean);
+procedure TfrmPrincipal.SetligaDesligaThread(const Value: Boolean);
 begin
-   FligaDesligaThread := Value;
+  FligaDesligaThread := Value;
 end;
 
 procedure TfrmPrincipal.StartServer;
@@ -120,7 +118,7 @@ begin
   begin
     FServer.Bindings.Clear;
     FServer.DefaultPort := StrToInt(EditPort.Text);
-    FServer.Active := True;
+    FServer.Active := true;
   end;
 end;
 
@@ -139,18 +137,17 @@ end;
 { TDBThread }
 
 procedure TDBThread.Execute;
- // var dm:TDMCEP ;
+// var dm:TDMCEP ;
 begin
 
   FreeOnTerminate := False;
 
- // dm := TDMCEP.Create(nil);
+  // dm := TDMCEP.Create(nil);
   try
-   DMCEP.ConsultaCEP;
+    DMCEP.ConsultaCEP;
   finally
-  //  FreeAndNil(dm);
+    // FreeAndNil(dm);
   end;
-
 
 end;
 

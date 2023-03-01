@@ -4,7 +4,8 @@ interface
 
 uses EnderecoIntegracao;
 
-type TEndereco =class
+type
+  TEndereco = class
   private
     FidEndereco: integer;
     Fdscep: String;
@@ -15,14 +16,15 @@ type TEndereco =class
     procedure SetidPessoa(const Value: integer);
     procedure SetendIntegracao(const Value: TEnderecoIntegracao);
   public
-     Constructor Create;
-     destructor Destroy;
+    Constructor Create;
+    destructor Destroy;
 
     property idEndereco: integer read FidEndereco write SetidEndereco;
-    property idPessoa  : integer read FidPessoa write SetidPessoa;
-    property dscep :String read Fdscep write Setdscep;
-    property endIntegracao :TEnderecoIntegracao read FendIntegracao write SetendIntegracao;
-end;
+    property idPessoa: integer read FidPessoa write SetidPessoa;
+    property dscep: String read Fdscep write Setdscep;
+    property endIntegracao: TEnderecoIntegracao read FendIntegracao
+      write SetendIntegracao;
+  end;
 
 implementation
 
@@ -35,7 +37,7 @@ end;
 
 destructor TEndereco.Destroy;
 begin
-   endIntegracao.Free;
+  endIntegracao.Free;
 end;
 
 procedure TEndereco.Setdscep(const Value: String);

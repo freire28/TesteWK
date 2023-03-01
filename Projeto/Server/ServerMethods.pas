@@ -2,14 +2,14 @@ unit ServerMethods;
 
 interface
 
-uses System.SysUtils, System.Classes, System.JSON, Rest.Json,
-    DataSnap.DSProviderDataModuleAdapter,
-    Datasnap.DSServer, Datasnap.DSAuth, Pessoa, FireDAC.Stan.Intf,
+uses System.SysUtils, System.Classes, System.JSON, Rest.JSON,
+  DataSnap.DSProviderDataModuleAdapter,
+  DataSnap.DSServer, DataSnap.DSAuth, Pessoa, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.VCLUI.Wait, Data.DB, FireDAC.Comp.Client, FireDAC.Phys.PG,
   FireDAC.Phys.PGDef, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
-  FireDAC.DApt, FireDAC.Comp.DataSet, REST.Response.Adapter, DMConsultaCEP,
+  FireDAC.DApt, FireDAC.Comp.DataSet, Rest.Response.Adapter, DMConsultaCEP,
   Vcl.ExtCtrls, Principal;
 
 type
@@ -60,80 +60,82 @@ type
     procedure FDQEnderecoIntegracaoAfterDelete(DataSet: TDataSet);
   private
     { Private declarations }
-    procedure convertJsonParaDataset(dataset:TDataSet; json:String);
-    function retornaProximoId(campo,tabela:String):integer;
+    procedure convertJsonParaDataset(DataSet: TDataSet; JSON: String);
+    function retornaProximoId(campo, tabela: String): integer;
 
   public
     { Public declarations }
 
-   function Pessoas :String;
-   function updatePessoas(objPessoa:TJSonObject):TJSONValue;
-   function acceptPessoas(objPessoa:TJSonObject ):TJSONValue;
-   function cancelPessoas(idPessoa:integer) :TJSONValue;
-   function updateInsertEmLote(jsonPessoas:TJSONArray):TJSONValue;
+    function Pessoas: String;
+    function updatePessoas(objPessoa: TJSonObject): TJSONValue;
+    function acceptPessoas(objPessoa: TJSonObject): TJSONValue;
+    function cancelPessoas(idPessoa: integer): TJSONValue;
+    function updateInsertEmLote(jsonPessoas: TJSONArray): TJSONValue;
 
   end;
 
 implementation
 
-
 {$R *.dfm}
 
 { TServerMethods }
 // alterando pessoa
-function TServerMethods.acceptPessoas(objPessoa:TJSonObject): TJSONValue;
-var pessoa:TPessoa;
+function TServerMethods.acceptPessoas(objPessoa: TJSonObject): TJSONValue;
+var
+  Pessoa: TPessoa;
 begin
 
-  pessoa := TPessoa.Create();
+  Pessoa := TPessoa.Create();
   try
     frmPrincipal.ligaDesligaThread := false;
 
-    pessoa := TJson.JsonToObject<Tpessoa>(objPessoa.ToJSON);
+    Pessoa := TJson.JsonToObject<TPessoa>(objPessoa.ToJSON);
 
-      FDQPessoa.Close;
-      FDQPessoa.ParamByName('idpessoa').AsInteger := pessoa.idPessoa;
-      FDQPessoa.Open();
-      if FDQPessoa.RecordCount > 0 then
-      begin
+    FDQPessoa.Close;
+    FDQPessoa.ParamByName('idpessoa').AsInteger := Pessoa.idPessoa;
+    FDQPessoa.Open();
+    if FDQPessoa.RecordCount > 0 then
+    begin
 
-        try
-          conexao.StartTransaction;
-          FDQPessoa.Edit;
-          FDQPessoa.FieldByName('flnatureza').Asinteger := pessoa.flnatureza;
-          FDQPessoa.FieldByName('dsdocumento').AsString := pessoa.dsdocumento;
-          FDQPessoa.FieldByName('nmprimeiro').AsString  := pessoa.nmprimeiro;
-          FDQPessoa.FieldByName('nmsegundo').AsString   := pessoa.nmsegundo;
-          FDQPessoa.FieldByName('dtregistro').AsDateTime := pessoa.dtregistro;
-          FDQPessoa.Post;
+      try
+        conexao.StartTransaction;
+        FDQPessoa.Edit;
+        FDQPessoa.FieldByName('flnatureza').AsInteger := Pessoa.flnatureza;
+        FDQPessoa.FieldByName('dsdocumento').AsString := Pessoa.dsdocumento;
+        FDQPessoa.FieldByName('nmprimeiro').AsString := Pessoa.nmprimeiro;
+        FDQPessoa.FieldByName('nmsegundo').AsString := Pessoa.nmsegundo;
+        FDQPessoa.FieldByName('dtregistro').AsDateTime := Pessoa.dtregistro;
+        FDQPessoa.Post;
 
-          FDQEndereco.Close;
-          FDQEndereco.ParamByName('idpessoa').AsInteger := pessoa.idPessoa;
-          FDQEndereco.Open();
+        FDQEndereco.Close;
+        FDQEndereco.ParamByName('idpessoa').AsInteger := Pessoa.idPessoa;
+        FDQEndereco.Open();
 
-          FDQEndereco.Edit;
-          FDQEndereco.FieldByName('idpessoa').AsInteger := FDQPessoa.FieldByName('idpessoa').Asinteger;
-          FDQEndereco.FieldByName('dscep').AsString := pessoa.endereco.dscep;
-          FDQEndereco.Post;
+        FDQEndereco.Edit;
+        FDQEndereco.FieldByName('idpessoa').AsInteger :=
+          FDQPessoa.FieldByName('idpessoa').AsInteger;
+        FDQEndereco.FieldByName('dscep').AsString := Pessoa.endereco.dscep;
+        FDQEndereco.Post;
 
-          Result := TJSONString.Create('Pessoa Alterada com sucesso id : ' + FDQPessoa.FieldByName('idpessoa').AsString ) ;
-          conexao.Commit;
-        Except
-          conexao.Rollback;
-          Result := TJSONString.Create('Erro ao Alterar Pessoa ');
-        end;
-
+        Result := TJSONString.Create('Pessoa Alterada com sucesso id : ' +
+          FDQPessoa.FieldByName('idpessoa').AsString);
+        conexao.Commit;
+      Except
+        conexao.Rollback;
+        Result := TJSONString.Create('Erro ao Alterar Pessoa ');
       end;
 
+    end;
+
   finally
-    pessoa.Free;
+    Pessoa.Free;
     FDQPessoa.Close;
     frmPrincipal.ligaDesligaThread := true;
   end;
 
 end;
 
-function TServerMethods.cancelPessoas(idPessoa:integer):TJSONValue;
+function TServerMethods.cancelPessoas(idPessoa: integer): TJSONValue;
 begin
 
   try
@@ -152,14 +154,16 @@ begin
         if FDQEndereco.RecordCount > 0 then
         begin
           FDQEnderecoIntegracao.Close;
-          FDQEnderecoIntegracao.ParamByName('idendereco').AsInteger := FDQEndereco.FieldByName('idendereco').AsInteger;
+          FDQEnderecoIntegracao.ParamByName('idendereco').AsInteger :=
+            FDQEndereco.FieldByName('idendereco').AsInteger;
           FDQEnderecoIntegracao.Open;
           if FDQEnderecoIntegracao.RecordCount > 0 then
             FDQEnderecoIntegracao.Delete;
           FDQEndereco.Delete;
         end;
         FDQPessoa.Delete;
-        Result := TJSONString.Create('Pessoa Excluida com sucesso id : ' + FDQPessoa.FieldByName('idpessoa').AsString ) ;
+        Result := TJSONString.Create('Pessoa Excluida com sucesso id : ' +
+          FDQPessoa.FieldByName('idpessoa').AsString);
         conexao.Commit;
       Except
         conexao.Rollback;
@@ -175,21 +179,22 @@ begin
 
 end;
 
-procedure TServerMethods.convertJsonParaDataset(dataset: TDataSet;json: String);
+procedure TServerMethods.convertJsonParaDataset(DataSet: TDataSet;
+  JSON: String);
 var
   JObj: TJSONArray;
-  vConv :TCustomJSONDataSetAdapter;
+  vConv: TCustomJSONDataSetAdapter;
 begin
-   if (json = EmptyStr) then
+  if (JSON = EmptyStr) then
   begin
     Exit;
   end;
 
-  JObj := TJSONObject.ParseJSONValue(json) as TJSONArray;
+  JObj := TJSonObject.ParseJSONValue(JSON) as TJSONArray;
   vConv := TCustomJSONDataSetAdapter.Create(Nil);
 
   try
-    vConv.Dataset := dataset;
+    vConv.DataSet := DataSet;
     vConv.UpdateDataSet(JObj);
   finally
     vConv.Free;
@@ -199,10 +204,11 @@ begin
 end;
 
 function TServerMethods.Pessoas: String;
-var jsonRetorno:String;
-    LJsonArr   : TJSONArray;
-    pessoa:TPessoa;
-    ObjJSon:TJSONObject;
+var
+  jsonRetorno: String;
+  LJsonArr: TJSONArray;
+  Pessoa: TPessoa;
+  ObjJSon: TJSonObject;
 
 begin
   FDQDadosPessoa.Close;
@@ -211,37 +217,49 @@ begin
   if FDQDadosPessoa.RecordCount > 0 then
   begin
     LJsonArr := TJSONArray.Create();
-    ObjJSon:=TJSONObject.Create;
+    ObjJSon := TJSonObject.Create;
     try
       FDQDadosPessoa.First;
       while not FDQDadosPessoa.Eof do
       begin
-        pessoa := TPessoa.Create();
+        Pessoa := TPessoa.Create();
         try
-          pessoa.idPessoa :=  FDQDadosPessoa.FieldByName('idPessoa').AsInteger;
-          pessoa.flnatureza  := FDQDadosPessoa.FieldByName('flnatureza').AsInteger;
-          pessoa.dsdocumento := FDQDadosPessoa.FieldByName('dsdocumento').AsString;
-          pessoa.nmprimeiro  := FDQDadosPessoa.FieldByName('nmprimeiro').AsString;
-          pessoa.nmsegundo   := FDQDadosPessoa.FieldByName('nmsegundo').AsString;
-          pessoa.dtregistro  := FDQDadosPessoa.FieldByName('dtregistro').AsDateTime;
-          pessoa.endereco.idEndereco := FDQDadosPessoa.FieldByName('idEndereco').AsInteger;
-          pessoa.endereco.idPessoa   := FDQDadosPessoa.FieldByName('idPessoa').AsInteger;
-          pessoa.endereco.dscep     := FDQDadosPessoa.FieldByName('dscep').AsString;
-          pessoa.endereco.endIntegracao.cep := FDQDadosPessoa.FieldByName('dscep').AsString;
-          pessoa.endereco.endIntegracao.logradouro :=  FDQDadosPessoa.FieldByName('nmlogradouro').AsString;
-          pessoa.endereco.endIntegracao.complemento  :=  FDQDadosPessoa.FieldByName('dscomplemento').AsString;
-          pessoa.endereco.endIntegracao.bairro :=  FDQDadosPessoa.FieldByName('nmbairro').AsString;
-          pessoa.endereco.endIntegracao.localidade :=  FDQDadosPessoa.FieldByName('nmcidade').AsString;
-          pessoa.endereco.endIntegracao.uf :=  FDQDadosPessoa.FieldByName('dsuf').AsString;
-          pessoa.endereco.endIntegracao.ibge :=  '';
-          pessoa.endereco.endIntegracao.gia :=  '';
-          pessoa.endereco.endIntegracao.ddd :=  '';
-          pessoa.endereco.endIntegracao.siafi :=  '';
+          Pessoa.idPessoa := FDQDadosPessoa.FieldByName('idPessoa').AsInteger;
+          Pessoa.flnatureza := FDQDadosPessoa.FieldByName('flnatureza')
+            .AsInteger;
+          Pessoa.dsdocumento := FDQDadosPessoa.FieldByName
+            ('dsdocumento').AsString;
+          Pessoa.nmprimeiro := FDQDadosPessoa.FieldByName('nmprimeiro')
+            .AsString;
+          Pessoa.nmsegundo := FDQDadosPessoa.FieldByName('nmsegundo').AsString;
+          Pessoa.dtregistro := FDQDadosPessoa.FieldByName('dtregistro')
+            .AsDateTime;
+          Pessoa.endereco.idEndereco := FDQDadosPessoa.FieldByName('idEndereco')
+            .AsInteger;
+          Pessoa.endereco.idPessoa := FDQDadosPessoa.FieldByName('idPessoa')
+            .AsInteger;
+          Pessoa.endereco.dscep := FDQDadosPessoa.FieldByName('dscep').AsString;
+          Pessoa.endereco.endIntegracao.cep :=
+            FDQDadosPessoa.FieldByName('dscep').AsString;
+          Pessoa.endereco.endIntegracao.logradouro :=
+            FDQDadosPessoa.FieldByName('nmlogradouro').AsString;
+          Pessoa.endereco.endIntegracao.complemento :=
+            FDQDadosPessoa.FieldByName('dscomplemento').AsString;
+          Pessoa.endereco.endIntegracao.bairro :=
+            FDQDadosPessoa.FieldByName('nmbairro').AsString;
+          Pessoa.endereco.endIntegracao.localidade :=
+            FDQDadosPessoa.FieldByName('nmcidade').AsString;
+          Pessoa.endereco.endIntegracao.uf := FDQDadosPessoa.FieldByName
+            ('dsuf').AsString;
+          Pessoa.endereco.endIntegracao.ibge := '';
+          Pessoa.endereco.endIntegracao.gia := '';
+          Pessoa.endereco.endIntegracao.ddd := '';
+          Pessoa.endereco.endIntegracao.siafi := '';
 
-          ObjJSon := TJson.ObjectToJsonObject(pessoa);
+          ObjJSon := TJson.ObjectToJsonObject(Pessoa);
           LJsonArr.AddElement(ObjJSon);
         finally
-          pessoa.Free;
+          Pessoa.Free;
         end;
 
         FDQDadosPessoa.Next;
@@ -254,32 +272,34 @@ begin
     end;
   end
   else
-    Result :='';
+    Result := '';
 end;
 
 function TServerMethods.retornaProximoId(campo, tabela: String): integer;
-var sql:String;
+var
+  sql: String;
 begin
-  sql := 'select coalesce(max('+campo+'),0) as count from ' + tabela;
+  sql := 'select coalesce(max(' + campo + '),0) as count from ' + tabela;
   FDQAux.Close;
-  FDQAux.SQL.Clear;
-  FDQAux.SQL.Add(sql);
+  FDQAux.sql.Clear;
+  FDQAux.sql.Add(sql);
   FDQAux.Open();
 
   if FDQAux.RecordCount > 0 then
   begin
-    result := FDQAux.FieldByName('count').AsInteger + 1 ;
+    Result := FDQAux.FieldByName('count').AsInteger + 1;
   end
   else
-    result := 1;
+    Result := 1;
 end;
 
 // inserindo pessoa
 function TServerMethods.updatePessoas(objPessoa: TJSonObject): TJSONValue;
-var pessoa:TPessoa;
+var
+  Pessoa: TPessoa;
 begin
 
-  pessoa := TPessoa.Create();
+  Pessoa := TPessoa.Create();
   try
     frmPrincipal.ligaDesligaThread := false;
 
@@ -287,28 +307,33 @@ begin
       FDQPessoa.Close;
       FDQPessoa.ParamByName('idpessoa').AsInteger := -1;
       FDQPessoa.Open();
-      pessoa := TJson.JsonToObject<Tpessoa>(objPessoa.ToJSON);
+      Pessoa := TJson.JsonToObject<TPessoa>(objPessoa.ToJSON);
 
       conexao.StartTransaction;
       FDQPessoa.Insert;
-      FDQPessoa.FieldByName('idpessoa').Asinteger := retornaProximoId('idpessoa','pessoa');
-      FDQPessoa.FieldByName('flnatureza').Asinteger := pessoa.flnatureza;
-      FDQPessoa.FieldByName('dsdocumento').AsString := pessoa.dsdocumento;
-      FDQPessoa.FieldByName('nmprimeiro').AsString  := pessoa.nmprimeiro;
-      FDQPessoa.FieldByName('nmsegundo').AsString   := pessoa.nmsegundo;
-      FDQPessoa.FieldByName('dtregistro').AsDateTime := pessoa.dtregistro;
+      FDQPessoa.FieldByName('idpessoa').AsInteger :=
+        retornaProximoId('idpessoa', 'pessoa');
+      FDQPessoa.FieldByName('flnatureza').AsInteger := Pessoa.flnatureza;
+      FDQPessoa.FieldByName('dsdocumento').AsString := Pessoa.dsdocumento;
+      FDQPessoa.FieldByName('nmprimeiro').AsString := Pessoa.nmprimeiro;
+      FDQPessoa.FieldByName('nmsegundo').AsString := Pessoa.nmsegundo;
+      FDQPessoa.FieldByName('dtregistro').AsDateTime := Pessoa.dtregistro;
       FDQPessoa.Post;
 
       FDQEndereco.Close;
-      FDQEndereco.ParamByName('idpessoa').AsInteger := FDQPessoa.FieldByName('idpessoa').Asinteger;
+      FDQEndereco.ParamByName('idpessoa').AsInteger :=
+        FDQPessoa.FieldByName('idpessoa').AsInteger;
       FDQEndereco.Open();
       FDQEndereco.Insert;
-      FDQEndereco.FieldByName('idendereco').AsInteger := retornaProximoId('idendereco','endereco');
-      FDQEndereco.FieldByName('idpessoa').AsInteger := FDQPessoa.FieldByName('idpessoa').Asinteger;
-      FDQEndereco.FieldByName('dscep').AsString := pessoa.endereco.dscep;
+      FDQEndereco.FieldByName('idendereco').AsInteger :=
+        retornaProximoId('idendereco', 'endereco');
+      FDQEndereco.FieldByName('idpessoa').AsInteger :=
+        FDQPessoa.FieldByName('idpessoa').AsInteger;
+      FDQEndereco.FieldByName('dscep').AsString := Pessoa.endereco.dscep;
       FDQEndereco.Post;
 
-      Result := TJSONString.Create('Pessoa cadastrada com sucesso id : ' + FDQPessoa.FieldByName('idpessoa').AsString ) ;
+      Result := TJSONString.Create('Pessoa cadastrada com sucesso id : ' +
+        FDQPessoa.FieldByName('idpessoa').AsString);
       conexao.Commit;
     Except
       conexao.Rollback;
@@ -316,7 +341,7 @@ begin
     end;
 
   finally
-    pessoa.Free;
+    Pessoa.Free;
     FDQPessoa.Close;
     frmPrincipal.ligaDesligaThread := true;
   end;
@@ -325,7 +350,7 @@ end;
 
 procedure TServerMethods.DSServerModuleCreate(Sender: TObject);
 begin
-  conexao.Connected := TRUE;
+  conexao.Connected := true;
 end;
 
 procedure TServerMethods.FDQEnderecoAfterDelete(DataSet: TDataSet);
@@ -354,33 +379,43 @@ begin
 end;
 
 function TServerMethods.updateInsertEmLote(jsonPessoas: TJSONArray): TJSONValue;
-var pessoa:TPessoa;
-    i : integer;
-    jp, jSubPar: TJSONPair;
-    contadorPessoa,contadorEndereco:integer;
+var
+  Pessoa: TPessoa;
+  i: integer;
+  jp, jSubPar: TJSONPair;
+  contadorPessoa, contadorEndereco: integer;
 begin
 
   try
-    contadorPessoa := retornaProximoId('idpessoa','pessoa');
-    contadorEndereco := retornaProximoId('idendereco','endereco');
+    contadorPessoa := retornaProximoId('idpessoa', 'pessoa');
+    contadorEndereco := retornaProximoId('idendereco', 'endereco');
 
     FDQInserePessoaEmLote.Params.ArraySize := jsonPessoas.Count;
     FDQInsereEnderecoEmLote.Params.ArraySize := jsonPessoas.Count;
 
-    for i := 0 to jsonPessoas.Count -1  do
+    for i := 0 to jsonPessoas.Count - 1 do
     begin
-      pessoa := TJson.JsonToObject<Tpessoa>(jsonPessoas.Get(i).ToString);
-      FDQInserePessoaEmLote.ParamByName('idpessoa').AsIntegers[i] := contadorPessoa;
-      FDQInserePessoaEmLote.ParamByName('flnatureza').AsIntegers[i] := pessoa.flnatureza;
-      FDQInserePessoaEmLote.ParamByName('dsdocumento').AsStrings[i] := pessoa.dsdocumento;
-      FDQInserePessoaEmLote.ParamByName('nmprimeiro').AsStrings[i] := pessoa.nmprimeiro;
-      FDQInserePessoaEmLote.ParamByName('nmsegundo').AsStrings[i] := pessoa.nmsegundo;
-      FDQInserePessoaEmLote.ParamByName('dtregistro').AsDateTimes[i] := pessoa.dtregistro;
-      if pessoa.endereco.dscep <> ''  then
+      Pessoa := TJson.JsonToObject<TPessoa>(jsonPessoas.Get(i).ToString);
+      FDQInserePessoaEmLote.ParamByName('idpessoa').AsIntegers[i] :=
+        contadorPessoa;
+      FDQInserePessoaEmLote.ParamByName('flnatureza').AsIntegers[i] :=
+        Pessoa.flnatureza;
+      FDQInserePessoaEmLote.ParamByName('dsdocumento').AsStrings[i] :=
+        Pessoa.dsdocumento;
+      FDQInserePessoaEmLote.ParamByName('nmprimeiro').AsStrings[i] :=
+        Pessoa.nmprimeiro;
+      FDQInserePessoaEmLote.ParamByName('nmsegundo').AsStrings[i] :=
+        Pessoa.nmsegundo;
+      FDQInserePessoaEmLote.ParamByName('dtregistro').AsDateTimes[i] :=
+        Pessoa.dtregistro;
+      if Pessoa.endereco.dscep <> '' then
       begin
-        FDQInsereEnderecoEmLote.ParamByName('idendereco').AsIntegers[i] := contadorEndereco;
-        FDQInsereEnderecoEmLote.ParamByName('idpessoa').AsIntegers[i] :=  contadorPessoa;
-        FDQInsereEnderecoEmLote.ParamByName('dscep').AsStrings[i] := pessoa.endereco.dscep;
+        FDQInsereEnderecoEmLote.ParamByName('idendereco').AsIntegers[i] :=
+          contadorEndereco;
+        FDQInsereEnderecoEmLote.ParamByName('idpessoa').AsIntegers[i] :=
+          contadorPessoa;
+        FDQInsereEnderecoEmLote.ParamByName('dscep').AsStrings[i] :=
+          Pessoa.endereco.dscep;
       end;
 
       inc(contadorPessoa);
@@ -389,17 +424,16 @@ begin
 
     conexao.StartTransaction;
     try
-      FDQInserePessoaEmLote.Execute(i,0);
-      FDQInsereEnderecoEmLote.Execute(i,0);
+      FDQInserePessoaEmLote.Execute(i, 0);
+      FDQInsereEnderecoEmLote.Execute(i, 0);
       conexao.Commit;
     Except
       conexao.Rollback;
     end;
   finally
-    pessoa.Free;
+    Pessoa.Free;
   end;
 
 end;
 
 end.
-
