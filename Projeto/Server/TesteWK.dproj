@@ -129,7 +129,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DCCReference>
         <DCCReference Include="..\classes\EnderecoIntegracao.pas"/>
         <DCCReference Include="dmConexao.pas">
-            <Form>conexao</Form>
+            <Form>dmdConexao</Form>
             <FormType>dfm</FormType>
             <DesignClass>TDataModule</DesignClass>
         </DCCReference>

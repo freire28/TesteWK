@@ -13,7 +13,7 @@ uses
   Endereco in '..\classes\Endereco.pas',
   DMConsultaCEP in 'DMConsultaCEP.pas' {DMCEP: TDataModule},
   EnderecoIntegracao in '..\classes\EnderecoIntegracao.pas',
-  dmConexao in 'dmConexao.pas' {conexao: TDataModule};
+  dmConexao in 'dmConexao.pas' {dmdConexao: TDataModule};
 
 {$R *.res}
 
@@ -22,7 +22,7 @@ begin
     WebRequestHandler.WebModuleClass := WebModuleClass;
   Application.Initialize;
   Application.CreateForm(TfrmPrincipal, frmPrincipal);
-  Application.CreateForm(Tconexao, conexao);
+  Application.CreateForm(TdmdConexao, dmdConexao);
   Application.CreateForm(TDMCEP, DMCEP);
   Application.Run;
 
