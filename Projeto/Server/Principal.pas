@@ -21,14 +21,12 @@ type
     EditPort: TEdit;
     Label1: TLabel;
     ApplicationEvents1: TApplicationEvents;
-    ButtonOpenBrowser: TButton;
     TimerThread: TTimer;
     CheckBox1: TCheckBox;
     procedure FormCreate(Sender: TObject);
     procedure ApplicationEvents1Idle(Sender: TObject; var Done: Boolean);
     procedure ButtonStartClick(Sender: TObject);
     procedure ButtonStopClick(Sender: TObject);
-    procedure ButtonOpenBrowserClick(Sender: TObject);
     procedure TimerThreadTimer(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure CheckBox1Click(Sender: TObject);
@@ -60,15 +58,6 @@ begin
   ButtonStart.Enabled := not FServer.Active;
   ButtonStop.Enabled := FServer.Active;
   EditPort.Enabled := not FServer.Active;
-end;
-
-procedure TfrmPrincipal.ButtonOpenBrowserClick(Sender: TObject);
-var
-  LURL: string;
-begin
-  StartServer;
-  LURL := Format('http://localhost:%s', [EditPort.Text]);
-  ShellExecute(0, nil, PChar(LURL), nil, nil, SW_SHOWNOACTIVATE);
 end;
 
 procedure TfrmPrincipal.ButtonStartClick(Sender: TObject);

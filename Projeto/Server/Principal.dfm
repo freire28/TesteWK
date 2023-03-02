@@ -2,8 +2,8 @@ object frmPrincipal: TfrmPrincipal
   Left = 271
   Top = 114
   Caption = 'Servidor WK'
-  ClientHeight = 117
-  ClientWidth = 367
+  ClientHeight = 88
+  ClientWidth = 345
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -48,34 +48,24 @@ object frmPrincipal: TfrmPrincipal
     TabOrder = 2
     Text = '211'
   end
-  object ButtonOpenBrowser: TButton
-    Left = 24
-    Top = 80
-    Width = 107
-    Height = 25
-    Caption = 'Abrir Navegador'
-    TabOrder = 3
-    OnClick = ButtonOpenBrowserClick
-  end
   object CheckBox1: TCheckBox
     Left = 137
     Top = 39
-    Width = 97
+    Width = 176
     Height = 17
     Caption = 'ThRead Atualiza Endere'#231'o'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = CheckBox1Click
   end
   object ApplicationEvents1: TApplicationEvents
     OnIdle = ApplicationEvents1Idle
-    Left = 216
-    Top = 72
+    Left = 304
+    Top = 8
   end
   object TimerThread: TTimer
     Enabled = False
-    Interval = 5000
+    Interval = 10000
     OnTimer = TimerThreadTimer
-    Left = 176
-    Top = 72
+    Left = 248
   end
 end

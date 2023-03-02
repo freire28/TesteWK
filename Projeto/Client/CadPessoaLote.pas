@@ -37,6 +37,7 @@ type
     lbResultado: TLabel;
     BindingsList1: TBindingsList;
     LinkPropertyToFieldCaption: TLinkPropertyToField;
+    Label1: TLabel;
     procedure Button1Click(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure Button2Click(Sender: TObject);

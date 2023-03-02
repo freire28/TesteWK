@@ -160,7 +160,7 @@ begin
         end;
         FDQPessoa.Delete;
         Result := TJSONString.Create('Pessoa Excluida com sucesso id : ' +
-          FDQPessoa.FieldByName('idpessoa').AsString);
+           IntToStr(idPessoa));
         dmdConexao.conexao.Commit;
       Except
         dmdConexao.conexao.Rollback;

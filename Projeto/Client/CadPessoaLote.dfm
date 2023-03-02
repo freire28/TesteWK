@@ -2,7 +2,7 @@ object frmCadPessoaLote: TfrmCadPessoaLote
   Left = 0
   Top = 0
   Caption = 'Frm. Importar Arquivo'
-  ClientHeight = 535
+  ClientHeight = 488
   ClientWidth = 773
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -18,9 +18,24 @@ object frmCadPessoaLote: TfrmCadPessoaLote
     Left = 0
     Top = 0
     Width = 773
-    Height = 41
+    Height = 53
     Align = alTop
     TabOrder = 0
+    object Label1: TLabel
+      Left = 24
+      Top = 35
+      Width = 425
+      Height = 13
+      Caption = 
+        'Arquivo em formato CSV com as colunas => natureza;documento;nome' +
+        ' ;sobrenome;cep'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlue
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      ParentFont = False
+    end
     object Button1: TButton
       Left = 24
       Top = 10
@@ -42,16 +57,18 @@ object frmCadPessoaLote: TfrmCadPessoaLote
   end
   object Panel2: TPanel
     Left = 0
-    Top = 41
+    Top = 53
     Width = 773
-    Height = 494
+    Height = 435
     Align = alClient
     TabOrder = 1
+    ExplicitTop = 41
+    ExplicitHeight = 494
     object DBGrid1: TDBGrid
       Left = 1
       Top = 1
       Width = 771
-      Height = 469
+      Height = 410
       Align = alClient
       DataSource = dsPessoa
       Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -105,14 +122,12 @@ object frmCadPessoaLote: TfrmCadPessoaLote
     end
     object Panel4: TPanel
       Left = 1
-      Top = 470
+      Top = 411
       Width = 771
       Height = 23
       Align = alBottom
       TabOrder = 1
-      ExplicitLeft = 0
-      ExplicitTop = 501
-      ExplicitWidth = 585
+      ExplicitTop = 470
       object lbResultado: TLabel
         Left = 13
         Top = 1

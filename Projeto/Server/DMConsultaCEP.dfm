@@ -3,7 +3,6 @@ object DMCEP: TDMCEP
   Height = 138
   Width = 188
   object RESTClient1: TRESTClient
-    BaseURL = 'https://viacep.com.br/ws/80620250/json'
     Params = <>
     Left = 24
     Top = 16
@@ -31,13 +30,13 @@ object DMCEP: TDMCEP
     Top = 16
   end
   object FDQAuxCEP1: TFDQuery
-    Connection = conexao.conexao
+    Connection = dmdConexao.conexao
     Left = 24
     Top = 72
   end
   object FDQEnderecoIntegracao: TFDQuery
     CachedUpdates = True
-    Connection = conexao.conexao
+    Connection = dmdConexao.conexao
     SQL.Strings = (
       
         'SELECT idendereco, dsuf, nmcidade, nmbairro, nmlogradouro, dscom' +
